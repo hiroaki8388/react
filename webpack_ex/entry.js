@@ -3,7 +3,11 @@ import ReactDOM from 'react-dom'
 import Hello from './Hello'
 
 ReactDOM.render(
-    <Hello />,
+<div>
+    <Hello />
+    <Hello />
+    <Hello />
+    </div>,
     document.getElementById('root')
 )
 
