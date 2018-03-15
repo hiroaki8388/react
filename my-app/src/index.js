@@ -1,18 +1,16 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
-import registerServiceWorker from './registerServiceWorker';
-import {createStore} from 'redux'
+import { createStore, } from 'redux'
+import { render } from 'react-dom'
 
 const initialState = {
-    task:"",
+    task: "",
     tasks: []
 }
 
-const inputTask=(task)=>({
+const inputTask = (task) => ({
     type: 'INPUT_TASK',
-    payload:{
+    payload: {
         task
     }
 
@@ -26,45 +24,62 @@ const addTask = (task) => ({
     }
 })
 
-const store=createStore(tasksReducer)
+const store = createStore(tasksReducer)
 
 store.dispatch(addTask('Storeを学ぶ'))
 
-function tasksReducer(state=initialState,action){
-    switch(actiion.type){
+function tasksReducer(state = initialState, action) {
+    switch (action.type) {
         case 'INPUT_TASK':
-        return{
-            ...state,
-            task:actiion.payload.task
-        }
+            return {
+                ...state,
+                task: action.payload.task
+            }
 
         case 'ADD_TASK':
-        return{
-            ...state,
-            tasks:state.tasks.concat([action.payload.task])
-        }
+            return {
+                ...state,
+                tasks: state.tasks.concat([action.payload.task])
+            }
 
         default:
-        return state
+            return state
     }
 }
 
-// この波括弧何?
-function TodoApp({store}){
-const {task,tasks}=store.getState()
 
 
-return(
-    <div>
-        <input type="text" onChange={(e)=>
-    store.dispatch(inputTask(e.target.value)) }/>
 
-    <input type="button" value="add" onClick={
-        ()=>store.dispatch(addTask(task))}/>
+function TodoApp({ store }) {
+    const { task, tasks } = store.getState()
 
-</div>
-)
+
+    return (
+        <div>
+            <input type="text" onChange={(e) =>
+                store.dispatch(inputTask(e.target.value))} />
+
+            <input type="button" value="add" onClick={
+                () => store.dispatch(addTask(task))} />
+            <ul>
+                {
+                    tasks.map(function (item, i) {
+                        return (
+                            <li key={i}>{item}</li>
+                        )
+                    })
+                }
+            </ul>
+        </div>
+    )
 }
 
-ReactDOM.render(<App />, document.getElementById('root'));
-registerServiceWorker();
+function renderApp(store) {
+    render(
+        <TodoApp store={store} />,
+        document.getElementById('root')
+    )
+}
+
+store.subscribe(() => renderApp(store))
+renderApp(store)
