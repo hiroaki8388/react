@@ -1,17 +1,15 @@
 import React from 'react'
-import {inputTask,addTask} from '../actions/tasks'
 
-export default function TodoApp({ store }) {
-    const { task, tasks } = store.getState()
-
+// contanerにより、dispatchとstoreの存在が隠蔽される
+export default function TodoApp({ task, tasks, inputTask, addTask }) {
 
     return (
         <div>
             <input type="text" onChange={(e) =>
-                store.dispatch(inputTask(e.target.value))} />
+                inputTask(e.target.value)} />
 
             <input type="button" value="add" onClick={
-                () => store.dispatch(addTask(task))} />
+                () => addTask(task)} />
             <ul>
                 {
                     tasks.map(function (item, i) {
